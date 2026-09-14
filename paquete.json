@@ -1,0 +1,23 @@
+{
+  "area": "landing",
+  "necesita": [
+    "fundamentos",
+    "guiones"
+  ],
+  "skills": [
+    "landing-b2b-alto-ticket",
+    "landing-b2b-copy-html",
+    "landing-b2b-index-html",
+    "landing-conversion",
+    "landing-conversion-copy-html",
+    "landing-inmueble-copy-html",
+    "landing-vsl-directa",
+    "landing-vsl-directa-copy-html",
+    "landing-vsl-directa-index-html",
+    "copy-b2b-alto-ticket",
+    "copy-vsl-directa",
+    "publicar-landing",
+    "pagina-gracias",
+    "impeccable"
+  ]
+}

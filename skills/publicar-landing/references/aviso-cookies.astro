@@ -1,0 +1,140 @@
+---
+// Aviso de cookies + medición con consentimiento previo.
+// Probado en producción en metodo.proyectosmart.es (07-09-2026).
+//
+// Va DENTRO de BaseLayout.astro:
+//   - `cssCookies` en el frontmatter
+//   - el bloque de abajo justo antes de </body>
+//   - GTM y el píxel NO se emiten en el <head>: los monta este script
+//     solo si el visitante acepta.
+//
+// Necesita en el contenido:
+//   seguimiento: { gtmId, metaPixelId }
+//   cookies:     { texto, urlPolitica }
+const { seguimiento, cookies } = contenido;
+
+const cssCookies = `
+.ps-cookies{position:fixed !important;left:16px !important;bottom:16px !important;z-index:2147483000 !important;width:min(360px,calc(100vw - 32px)) !important;box-sizing:border-box !important;display:flex !important;flex-direction:column !important;gap:12px !important;padding:16px 18px !important;background:#101010 !important;color:#fff !important;border:1px solid #2a2a2a !important;border-radius:12px !important;box-shadow:0 18px 44px -20px rgba(0,0,0,.75) !important;font-family:'Space Grotesk',system-ui,sans-serif !important;animation:psCookiesIn .28s cubic-bezier(.23,1,.32,1) both !important;}
+/* Obligatorio: el display:flex !important de arriba anula el atributo
+   hidden, así que sin esto la tarjeta no se oculta nunca al elegir. */
+.ps-cookies[hidden],.ps-cookies-abrir[hidden]{display:none !important;}
+@keyframes psCookiesIn{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
+.ps-cookies-txt{margin:0 !important;font-size:13px !important;line-height:1.5 !important;color:rgba(255,255,255,.82) !important;}
+.ps-cookies-txt a{color:#ffc107 !important;text-decoration:underline !important;}
+.ps-cookies-btns{display:flex !important;gap:8px !important;}
+.ps-cookies-btns button{flex:1 1 0 !important;min-height:38px !important;padding:9px 14px !important;border:1px solid #4a4a4a !important;border-radius:6px !important;background:transparent !important;color:#fff !important;font-family:inherit !important;font-size:13px !important;font-weight:700 !important;line-height:1.2 !important;cursor:pointer !important;transition:background .18s,color .18s,border-color .18s !important;}
+.ps-cookies-btns button:hover{background:rgba(255,255,255,.08) !important;}
+.ps-cookies-btns button.ok{background:#ffc107 !important;border-color:#ffc107 !important;color:#000 !important;}
+.ps-cookies-btns button.ok:hover{background:#e6a800 !important;border-color:#e6a800 !important;}
+.ps-cookies-btns button:focus-visible{outline:2px solid #ffc107 !important;outline-offset:2px !important;}
+.ps-cookies-abrir{position:fixed !important;left:16px !important;bottom:16px !important;z-index:2147482999 !important;padding:7px 12px !important;border:1px solid rgba(0,0,0,.14) !important;border-radius:100px !important;background:rgba(255,255,255,.92) !important;color:#444 !important;font-family:'Space Grotesk',system-ui,sans-serif !important;font-size:11.5px !important;font-weight:600 !important;line-height:1 !important;cursor:pointer !important;box-shadow:0 6px 18px -8px rgba(0,0,0,.4) !important;opacity:.55 !important;transition:opacity .2s !important;}
+.ps-cookies-abrir:hover{opacity:1 !important;}
+@media(max-width:600px){
+.ps-cookies{left:8px !important;right:8px !important;bottom:calc(8px + env(safe-area-inset-bottom,0px)) !important;width:auto !important;padding:10px 12px !important;gap:8px !important;border-radius:10px !important;}
+.ps-cookies-txt{font-size:11.5px !important;line-height:1.35 !important;}
+.ps-cookies-btns button{min-height:32px !important;padding:6px 10px !important;font-size:12px !important;}
+.ps-cookies-abrir{left:8px !important;bottom:calc(8px + env(safe-area-inset-bottom,0px)) !important;}
+}
+@media (prefers-reduced-motion:reduce){.ps-cookies{animation:none !important;}}
+`;
+---
+
+    {
+      (seguimiento.gtmId || seguimiento.metaPixelId) && cookies.texto && (
+        <>
+          <div
+            id="ps-cookies"
+            class="ps-cookies"
+            role="dialog"
+            aria-live="polite"
+            aria-label="Aviso de cookies"
+            hidden
+          >
+            <p class="ps-cookies-txt">
+              {cookies.texto}
+              {cookies.urlPolitica && (
+                <>
+                  {' '}
+                  <a href={cookies.urlPolitica} target="_blank" rel="noopener noreferrer">
+                    Política de cookies
+                  </a>
+                </>
+              )}
+            </p>
+            <div class="ps-cookies-btns">
+              <button type="button" data-ps-cookies="rechazar">Rechazar</button>
+              <button type="button" data-ps-cookies="aceptar" class="ok">Aceptar</button>
+            </div>
+          </div>
+
+          <button type="button" id="ps-cookies-abrir" class="ps-cookies-abrir" hidden>
+            Cookies
+          </button>
+
+          <style is:inline set:html={cssCookies} />
+
+          <script
+            is:inline
+            data-gtm={seguimiento.gtmId}
+            data-pixel={seguimiento.metaPixelId}
+            set:html={`
+(function(){
+  var s=document.currentScript;
+  var gtm=s.getAttribute('data-gtm')||'';
+  var pixel=s.getAttribute('data-pixel')||'';
+  var CLAVE='ps-consentimiento';
+  // El consentimiento caduca al año: la AEPD pide renovarlo cada cierto
+  // tiempo, no vale guardarlo para siempre.
+  var VIGENCIA=365*24*60*60*1000;
+  var aviso=document.getElementById('ps-cookies');
+  var abrir=document.getElementById('ps-cookies-abrir');
+  var cargado=false;
+
+  function leer(){
+    try{
+      var v=JSON.parse(localStorage.getItem(CLAVE)||'null');
+      if(!v||!v.fecha) return null;
+      if(Date.now()-v.fecha>VIGENCIA) return null;
+      return v.valor;
+    }catch(e){ return null; }
+  }
+  function guardar(valor){
+    try{ localStorage.setItem(CLAVE,JSON.stringify({valor:valor,fecha:Date.now()})); }catch(e){}
+  }
+  function cargarMedicion(){
+    if(cargado) return; cargado=true;
+    if(gtm){
+      window.dataLayer=window.dataLayer||[];
+      window.dataLayer.push({'gtm.start':new Date().getTime(),event:'gtm.js'});
+      var j=document.createElement('script');
+      j.async=true; j.src='https://www.googletagmanager.com/gtm.js?id='+gtm;
+      document.head.appendChild(j);
+    }
+    if(pixel){
+      !function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,document,'script','https://connect.facebook.net/en_US/fbevents.js');
+      window.fbq('init',pixel); window.fbq('track','PageView');
+    }
+  }
+  function mostrarAviso(){ aviso.hidden=false; abrir.hidden=true; }
+  function ocultarAviso(){ aviso.hidden=true; abrir.hidden=false; }
+
+  aviso.addEventListener('click',function(e){
+    var b=e.target.closest('[data-ps-cookies]'); if(!b) return;
+    var eleccion=b.getAttribute('data-ps-cookies');
+    guardar(eleccion);
+    if(eleccion==='aceptar') cargarMedicion();
+    ocultarAviso();
+  });
+  abrir.addEventListener('click',mostrarAviso);
+
+  var previo=leer();
+  if(previo==='aceptar'){ cargarMedicion(); abrir.hidden=false; }
+  else if(previo==='rechazar'){ abrir.hidden=false; }
+  else { mostrarAviso(); }
+})();
+`}
+          />
+        </>
+      )
+    }
+
