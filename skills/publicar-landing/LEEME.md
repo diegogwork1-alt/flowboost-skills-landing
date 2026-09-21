@@ -9,22 +9,28 @@ Publica una landing YA APROBADA en un subdominio del cliente, con panel de edici
 
 **Qué NO hace:** NO genera copy ni maqueta: eso lo hacen las skills de landing. No usar para webs corporativas de varias páginas.
 
-## Antes de empezar necesitás
+## Antes de empezar necesitas
 
-- La landing **aprobada**, y el **DNS del cliente** — es el DNS quien decide el hosting, no hay uno fijo.
+- La landing **aprobada** y el **dominio del cliente**. El hosting es SIEMPRE Cloudflare Pages (cuenta `<correo-cuenta-de-trabajo>`, repos en GitHub `<usuario-github>`); del DNS solo hay que saber dónde se crea el CNAME (`dig +short NS`).
+- Los IDs de medición del proyecto: GTM, píxel de Meta si va suelto, y **un proyecto de Microsoft Clarity por landing**.
 
 ## Lo que NO se puede hacer
 
 - ⛔ Teclear credenciales de hosting, DNS o WordPress. Las pone Dirección.
+- ⛔ **Desplegar en Netlify.** Al agotar los 300 créditos del plan gratis pausa TODAS las webs de la cuenta. Solo se entra para migrar sitios viejos fuera.
+- ⛔ **Cargar GTM, el píxel o Clarity antes de que acepten las cookies**, aunque la documentación de Clarity diga que va en el `<head>`.
+- ⛔ Tocar en el DNS del cliente cualquier registro que no sea el de la landing: su correo (MX) y su web siguen intactos.
 
 ## Ojo con esto
 
-- Incluye página de gracias, medición, aviso de cookies conforme al RGPD y base de datos de leads.
+- Incluye página de gracias, medición (GTM, píxel y Clarity) y aviso de cookies conforme al RGPD. El registro de consentimientos va a Cloudflare D1 (FASE 9, validado): obligatorio, la AEPD puede pedir la prueba.
+- **La landing es estática: el panel de Keystatic solo existe en local** (`npm run dev`). Un cambio no se publica hasta hacer `git push`.
+- **Netlify tiene dos cuentas** (`<cuenta-de-trabajo>` y `Fb` de `<correo-direccion>`) y hay dos Chrome con sesiones distintas: la tabla está al principio de la skill.
 - Al terminar encadena con `montar-crm-cliente`.
 
 ## Accesos que toca
 
-Google Drive del cliente (solo lectura salvo entregables), VPS por SSH, Tally (formulario).
+Google Drive del cliente (solo lectura salvo entregables), Tally (formulario), Cloudflare Pages (cuenta <correo-cuenta-de-trabajo>), GitHub (<usuario-github>, push), DNS del cliente (solo los registros de la landing).
 
 ## Reglas de la casa (valen para todas las skills)
 
@@ -39,4 +45,4 @@ Google Drive del cliente (solo lectura salvo entregables), VPS por SSH, Tally (f
 
 ---
 
-*Generado el 10-09-2026 desde el sistema de Flowboost. Se regenera con `gen_leeme.py`; no editar a mano.*
+*Generado el 21-09-2026 desde el sistema de Flowboost. Se regenera con `gen_leeme.py`; no editar a mano.*

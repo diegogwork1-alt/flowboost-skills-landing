@@ -9,7 +9,7 @@
 //     solo si el visitante acepta.
 //
 // Necesita en el contenido:
-//   seguimiento: { gtmId, metaPixelId }
+//   seguimiento: { gtmId, metaPixelId, clarityId }
 //   cookies:     { texto, urlPolitica }
 const { seguimiento, cookies } = contenido;
 
@@ -40,7 +40,7 @@ const cssCookies = `
 ---
 
     {
-      (seguimiento.gtmId || seguimiento.metaPixelId) && cookies.texto && (
+      (seguimiento.gtmId || seguimiento.metaPixelId || seguimiento.clarityId) && cookies.texto && (
         <>
           <div
             id="ps-cookies"
@@ -77,11 +77,13 @@ const cssCookies = `
             is:inline
             data-gtm={seguimiento.gtmId}
             data-pixel={seguimiento.metaPixelId}
+            data-clarity={seguimiento.clarityId}
             set:html={`
 (function(){
   var s=document.currentScript;
   var gtm=s.getAttribute('data-gtm')||'';
   var pixel=s.getAttribute('data-pixel')||'';
+  var clarity=s.getAttribute('data-clarity')||'';
   var CLAVE='ps-consentimiento';
   // El consentimiento caduca al año: la AEPD pide renovarlo cada cierto
   // tiempo, no vale guardarlo para siempre.
@@ -100,6 +102,15 @@ const cssCookies = `
   }
   function guardar(valor){
     try{ localStorage.setItem(CLAVE,JSON.stringify({valor:valor,fecha:Date.now()})); }catch(e){}
+    // Prueba del consentimiento fuera del navegador (FASE 9, functions/api/consentimiento.ts).
+    var txt=document.querySelector('.ps-cookies-txt');
+    try{
+      fetch('/api/consentimiento',{
+        method:'POST', keepalive:true,
+        headers:{'Content-Type':'application/json'},
+        body:JSON.stringify({estado:valor, texto:txt?txt.textContent.replace(/\\s+/g,' ').trim():'', pagina:location.pathname})
+      }).catch(function(){});
+    }catch(e){}
   }
   function cargarMedicion(){
     if(cargado) return; cargado=true;
@@ -113,6 +124,15 @@ const cssCookies = `
     if(pixel){
       !function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,document,'script','https://connect.facebook.net/en_US/fbevents.js');
       window.fbq('init',pixel); window.fbq('track','PageView');
+    }
+    if(clarity){
+      // Clarity graba la sesión, así que va aquí y no en el <head> como dice
+      // su documentación: sin consentimiento no puede empezar a grabar.
+      (function(c,l,a,r,i,t,y){
+        c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+        t=l.createElement(r);t.async=1;t.src='https://www.clarity.ms/tag/'+i;
+        y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+      })(window,document,'clarity','script',clarity);
     }
   }
   function mostrarAviso(){ aviso.hidden=false; abrir.hidden=true; }

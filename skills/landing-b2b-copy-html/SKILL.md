@@ -4,7 +4,7 @@ description: Flujo COMPLETO 2-en-1 para una landing B2B de alto ticket (servicio
 ---
 
 
-> 📐 **PARÁMETROS DE COPY DE LANDING, CON SU FUENTE:** `../fundamentos-copy/references/parametros-landing.md`. Ahí están una sola vez y **con la fuente de cada una** las reglas que antes estaban repartidas y desiguales entre las 9 skills de landing: frases ≤15 palabras · párrafos ≤2 oraciones · **prohibido el guion largo (—)** · el titular responde «¿por qué me importa?» · **2-3 testimonios reales** y nunca en carrusel en móvil · **nunca «sin compromiso» ni «gratis»** bajo el CTA · y **qué cifras NO están en las fuentes** (los umbrales de Core Web Vitals y el impacto de la velocidad en conversión: si alguien las cita como dato propio, es una alucinación).
+> 📐 **PARÁMETROS DE COPY DE LANDING, CON SU FUENTE:** `../fundamentos-copy/references/parametros-landing.md`. Ahí están una sola vez y **con la fuente de cada una** las reglas que antes estaban repartidas y desiguales entre las 9 skills de landing: frases ≤15 palabras · párrafos ≤2 oraciones · **prohibido el guion largo (—)** · el titular responde «¿por qué me importa?» · **2-3 testimonios reales** y nunca en carrusel en móvil · **nunca «sin compromiso» ni «gratis»** bajo el CTA · **muletillas de IA prohibidas** («potenciar», «llevar al siguiente nivel», «sin fisuras»…) · y **qué cifras NO están en las fuentes** (los umbrales de Core Web Vitals y el impacto de la velocidad en conversión: si alguien las cita como dato propio, es una alucinación).
 # Landing B2B alto ticket — Copy + HTML (2 en 1, con aprobación por sección)
 
 **IMPORTANTE: TODO lo que necesitás está EN ESTE MISMO ARCHIVO, más abajo. NO leas archivos externos.** Cuando las instrucciones de abajo mencionen "ESTRUCTURA-B2B-PAINGAIN.md" u "ogilvy-principios.md", esos contenidos están INCLUIDOS abajo (secciones "ESTRUCTURA" y "PRINCIPIOS DE OGILVY").
@@ -136,6 +136,7 @@ No es un repaso final: se ejecuta bloque por bloque. Si respondés "no" a alguna
 - [ ] ¿Lo pasaste por `impeccable`, `design-taste-frontend`, `emil-design-eng` y `make-interfaces-feel-better`?
 - [ ] ¿Radio concéntrico (externo = interno + padding), `tabular-nums` en las cifras que cambian, outline de 1px en las imágenes?
 - [ ] ¿Área táctil ≥44×44 px en TODO control, sin solapes?
+- [ ] ¿Cada control (CTA, acordeón, pestañas, flechas, cerrar) tiene sus **estados**: hover solo con `transform`/`box-shadow`, **active** (`scale(.98)` o `translateY(1px)`), **`:focus-visible`** con anillo visible, y deshabilitado que no dependa solo del color? ¿Ningún `href="#"` muerto?
 - [ ] ¿Contraste AA verificado, incluido el acento sobre el que se hace clic?
 - [ ] ¿Jerarquía de headings sin saltos y un solo `h1` en la página?
 - [ ] Si el bloque tiene formulario, acordeón, tabs, carrusel o botones de icono: ¿lo pasaste por `fixing-accessibility`?

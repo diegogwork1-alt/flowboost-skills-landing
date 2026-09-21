@@ -1,6 +1,6 @@
 ---
 name: publicar-landing
-description: Publica una landing YA APROBADA en un subdominio del cliente, con panel de edición para cambiar textos e imágenes sin tocar código. Toma el HTML que generan las skills landing-b2b-index-html, landing-vsl-directa-index-html, landing-inmueble-copy-html, landing-vsl-directa, landing-b2b-alto-ticket o landing-conversion (y sus versiones copy+html), lo convierte en un proyecto Astro + Keystatic ESTÁTICO (sin SSR, sin adaptador), lo sube a GitHub y lo despliega en Cloudflare Pages con build automático en cada push. Hosting único para todos los clientes: Pages acepta CNAME desde cualquier DNS, así que el hosting del cliente da igual. El panel de Keystatic corre en local y no se despliega (storage local), lo que elimina el GitHub App y los secretos. Incluye página de gracias, medición (GTM/píxel), aviso de cookies conforme al RGPD y registro de consentimientos en un Supabase compartido de agencia. Un subdominio por landing. NO genera copy ni maqueta: eso lo hacen las skills de landing. Usar cuando el usuario diga "publicá la landing", "subila al subdominio", "montala online" DESPUÉS de haber aprobado la maqueta, o cuando otra skill de landing la invoque al terminar. No usar para webs corporativas de varias páginas.
+description: Publica una landing YA APROBADA en un subdominio del cliente, con panel de edición para cambiar textos e imágenes sin tocar código. Toma el HTML que generan las skills landing-b2b-index-html, landing-vsl-directa-index-html, landing-inmueble-copy-html, landing-vsl-directa, landing-b2b-alto-ticket o landing-conversion (y sus versiones copy+html), lo convierte en un proyecto Astro + Keystatic ESTÁTICO (sin SSR, sin adaptador), lo sube a GitHub y lo despliega en Cloudflare Pages con build automático en cada push. Hosting único para todos los clientes: Pages acepta CNAME desde cualquier DNS, así que el hosting del cliente da igual. El panel de Keystatic corre en local y no se despliega (storage local), lo que elimina el GitHub App y los secretos. Incluye página de gracias, medición (GTM, píxel y Microsoft Clarity, todo cargado solo tras aceptar las cookies), aviso de cookies conforme al RGPD y registro de consentimientos en Cloudflare D1 (obligatorio, la AEPD puede pedir la prueba). Un subdominio por landing. NO genera copy ni maqueta: eso lo hacen las skills de landing. Usar cuando el usuario diga "publicá la landing", "subila al subdominio", "montala online" DESPUÉS de haber aprobado la maqueta, o cuando otra skill de landing la invoque al terminar. No usar para webs corporativas de varias páginas.
 ---
 
 # Publicar landing en subdominio con panel de edición
@@ -30,6 +30,61 @@ Dirección no quiere ir contestando preguntas. **Decidí vos y avanzá.** Todo l
 3. **Un secreto o un pago.** El `client_secret`, las contraseñas y comprar cosas no los tocás nunca (ver FASE 8).
 
 Todo lo demás: adelante, y al final informás de lo hecho.
+
+---
+
+## Cuentas, sesiones y navegadores (comprobado 11-09-2026)
+
+Saber **qué cuenta y qué Chrome** tiene cada cosa ahorra media sesión. Ninguna
+contraseña pasa por vos: si un acceso pide contraseña o código, **parás** y se
+lo pasás a Dirección.
+
+### Las cuentas
+
+| Servicio | Cuenta | Para qué |
+|---|---|---|
+| **GitHub** | `<usuario-github>` (SSH ya configurado) | Repos de las landings. `ssh -T git@github.com` lo confirma |
+| **Cloudflare** | `<correo-cuenta-de-trabajo>` | **Pages**: aquí viven todas las landings. Ya tiene conectada la app de GitHub de `<usuario-github>` |
+| **Netlify** | ⚠️ **dos cuentas, no las confundas** | Solo para migrar sitios viejos FUERA. No se despliega nada nuevo |
+| ↳ equipo `<cuenta-de-trabajo>` | `<correo-cuenta-de-trabajo>` | Sin créditos ("operational credits"): despliegues pausados |
+| ↳ equipo `Fb` | `<correo-direccion>` | Tiene `tiseraconstrucciones.com`, plan gratis, pendiente de migrar |
+| **Clarity** | un proyecto **por landing** | Se crea en clarity.microsoft.com; el ID va al panel |
+
+### Los dos Chrome
+Suele haber **dos navegadores conectados**. Lo que tiene sesión cada uno:
+
+| Chrome | Sesiones |
+|---|---|
+| `<cuenta-de-trabajo>` | Cloudflare, GitHub, Netlify equipo `<cuenta-de-trabajo>` |
+| `<correo-direccion>` | **Área de cliente de Sered** (del cliente), Typeform, Netlify equipo `Fb` |
+
+- **No hagas elegir a Dirección entre deviceIds**: no le dicen nada. Usá
+  `switch_browser` y avisá en una línea: *"te sale un botón Connect, dale en el
+  que tenga X abierto"*.
+- Si una web pide iniciar sesión y en ese Chrome no hay cuenta guardada,
+  probá el otro antes de preguntar.
+- Si Google muestra el selector de cuentas, elegir la cuenta **no es meter una
+  contraseña**: se puede. Si después pide contraseña o código, se para.
+
+### 🚨 Sered es la cuenta DEL CLIENTE
+El área de cliente de Sered del Chrome `<correo-direccion>` está
+logueada **como el cliente** (en Cliente 14, *"Bienvenido, Alejandro"*).
+Ahí dentro **solo se tocan los registros de la landing** (el CNAME y su TXT de
+verificación). Nada de la zona que no hayas creado vos.
+
+Ruta: *Área de cliente → Entrar a cPanel → Zone Editor → Manage* del dominio.
+
+### 🚨 Borrar un sitio de Netlify exige la cuenta que lo posee
+Si el Chrome está logueado en el otro equipo, el proyecto da *Page not found*
+aunque exista. Hay que **cerrar sesión** (`app.netlify.com/logout`) y volver a
+entrar con Google eligiendo la cuenta correcta. Eso **cierra la sesión de la
+otra cuenta** en ese Chrome: avisá a Dirección de que lo hiciste.
+
+### 🚨 Campos de formularios de React: `form_input`, no escribir
+En paneles hechos con React (el asistente de Keystatic, el formulario de
+Pages), escribir con `computer type` **deja la pantalla en blanco**.
+`form_input` fija el valor directamente y funciona. Para desplegables que
+`form_input` no cambia, abrilos con un clic y elegí la opción.
 
 ---
 
@@ -254,7 +309,7 @@ grep -c '<style>{`' dist/index.html   # tiene que dar 0
 Toda landing de Flowboost mide, y toda landing con tráfico español necesita consentimiento previo. Se hacen juntas porque una depende de la otra.
 
 ### Los IDs van en el contenido, no en el código
-Campos `seguimiento.gtmId` y `seguimiento.metaPixelId` en el JSON y en el panel. Ventajas: se cambian sin tocar código, y **si están vacíos no se emite ni una línea** — la página no carga scripts de terceros que no se usan.
+Campos `seguimiento.gtmId`, `seguimiento.metaPixelId` y `seguimiento.clarityId` en el JSON y en el panel. Ventajas: se cambian sin tocar código, y **si están vacíos no se emite ni una línea** — la página no carga scripts de terceros que no se usan.
 
 **Preguntá el ID de GTM.** Si Dirección da solo el de GTM, el píxel se dispara **como etiqueta dentro de Tag Manager** y `metaPixelId` se deja **vacío**: ponerlo en los dos sitios cuenta cada PageView dos veces.
 
@@ -264,12 +319,58 @@ Esto es lo que incumple casi todo el mundo. El snippet de GTM **no va en el `<he
 - **Fuera el `<noscript>` del GTM.** Sin JavaScript no hay forma de pedir consentimiento, así que tampoco puede haber medición.
 - La elección se guarda en `localStorage` con fecha y **caduca al año**: la AEPD pide renovarla.
 
+### Microsoft Clarity: tampoco va en el `<head>`
+**Su documentación dice que el snippet va en el `<head>`. Aquí no.** Clarity
+**graba la sesión del visitante** (movimientos, clics, scroll) y pone cookies
+(`_clck`, `_clsk`): es más sensible que una analítica normal, no menos. En el
+`<head>` empezaría a grabar antes de que nadie acepte y tumbaría el aviso.
+
+Va dentro de `cargarMedicion()`, junto a GTM y el píxel. Para quien acepta, la
+diferencia es de milisegundos. El código está en `references/aviso-cookies.astro`.
+
+El ID de Clarity es **de cada proyecto**: se crea uno por landing en
+clarity.microsoft.com y se pega en el panel. No lo reutilices entre clientes.
+
+**Verificación obligatoria**, en el dominio de producción y con `localStorage` limpio:
+
+| Momento | Script de `clarity.ms` | Cookies `_clck` / `_clsk` |
+|---|---|---|
+| Antes de aceptar | **no** | **no** |
+| Tras pulsar Aceptar | sí | sí |
+
+🚨 **Al añadir un campo a `seguimiento`, añadilo también al `.default()` de Zod.**
+El objeto por defecto tiene que listar todas las claves; si falta una, `astro
+check` da `ts(2769): No overload matches this call`. Pasó exactamente al meter
+`clarityId`:
+```ts
+.default({ gtmId: '', metaPixelId: '', clarityId: '' })
+```
+
+### 🚨 Añadir un ID de medición toca CINCO sitios
+Se falló dos veces por olvidar uno. Cualquier ID nuevo (Clarity, TikTok, LinkedIn…):
+
+| # | Dónde | Si se olvida |
+|---|---|---|
+| 1 | `src/content/landing/index.json` → `seguimiento` | no hay ID que usar |
+| 2 | `src/lib/content.ts` → el campo **y** el `.default()` | `astro check` falla con `ts(2769)` |
+| 3 | `keystatic.config.ts` → el campo del panel | no se puede cambiar sin tocar código |
+| 4 | `BaseLayout.astro` → atributo `data-*` del script y su `getAttribute` | el script no recibe el ID |
+| 5 | `BaseLayout.astro` → **la condición que pinta el aviso** | ⚠️ **falla en silencio** |
+
+El 5 es el peligroso: la condición decide si se renderiza el aviso de cookies.
+Si solo mira `gtmId || metaPixelId`, una landing con Clarity pero sin GTM **no
+muestra el aviso, nadie puede aceptar y Clarity no carga nunca** — sin error en
+la consola ni en el build. Tiene que incluir **todos** los IDs:
+```astro
+(seguimiento.gtmId || seguimiento.metaPixelId || seguimiento.clarityId) && cookies.texto && (
+```
+
 ### El banner: pequeño y legal
 Tarjeta fija abajo a la izquierda, ~360 px en escritorio y ~11 % de pantalla en móvil. Requisitos que **no son negociables**:
 
 | Requisito | Cómo se cumple |
 |---|---|
-| Consentimiento **previo** | GTM/píxel solo se montan tras pulsar Aceptar |
+| Consentimiento **previo** | GTM, píxel y Clarity solo se montan tras pulsar Aceptar |
 | Rechazar tan fácil como aceptar | Los dos botones **idénticos**: mismo tamaño, misma tipografía, mismo peso. Lo exige la AEPD desde 2022 |
 | Sin consentimiento tácito | Navegar no acepta. Sin casillas premarcadas ni muro de cookies |
 | Información | Enlace a la política de cookies |
@@ -283,7 +384,8 @@ curl -s -L "https://www.<cliente>.es" | grep -ioE 'href="[^"]*(cookie|privacidad
 Enlazá la suya. Si de verdad no existe, avisá a Dirección (`python3 ~/Desktop/FLOWBOOST-BACKUP-MAC/Documentos-Flowboost/Estandar-carpetas/avisar.py --nivel aviso`): es del cliente, no tuya.
 
 ### 📎 No lo escribas de cero
-`references/aviso-cookies.astro` trae la implementación **ya probada en producción**: el CSS, el markup, el guardado con caducidad y la carga condicional de GTM y del píxel. Copiala y cambiá los textos. Contiene los dos arreglos que costaron un despliegue: la regla `[hidden]` y el `set:html`.
+- `references/consentimiento-d1.ts` — **la función de consentimientos validada** (D1, tablas y sal automáticas).
+`references/aviso-cookies.astro` trae la implementación **ya probada en producción**: el CSS, el markup, el guardado con caducidad y la carga condicional de GTM, del píxel y de Clarity. Copiala y cambiá los textos. Contiene los dos arreglos que costaron un despliegue: la regla `[hidden]` y el `set:html`.
 
 ### 🚨 `[hidden]` no funciona si pusiste `display` con `!important`
 El bug que se coló en producción: `.banner{display:flex !important}` **anula el atributo `hidden`**. La elección se guardaba y GTM cargaba, pero la tarjeta no desaparecía nunca. Desde fuera: *"le doy al botón y no pasa nada"*.
@@ -354,6 +456,41 @@ el.hidden                             // ⛔ dice lo que pediste, no lo que pasa
 - Consola sin errores.
 - **El panel edita de verdad**: cambiá un campo, guardá, y comprobá que **el JSON de disco cambió** (`git status` lo ve). No basta con que el panel abra.
 - Sin GTM antes de aceptar; con GTM después.
+
+### Antes de publicar: lo que hace que la página parezca terminada (14-09-2026)
+
+Son cosas que se olvidan porque no se ven en la maqueta aprobada. Sacadas de la lista *Ship requirements* de `elayadesign/ai-design-skills` y adaptadas a este stack. **Todas se comprueban sobre `dist/`, no de memoria.**
+
+**1. Indexar o no: se decide, no se hereda.**
+- **Landing solo para anuncios** (Meta/Google Ads, oferta con fecha, el caso normal en Flowboost) → **`noindex`**. Es el valor por defecto.
+  - `<BaseLayout noindex>` en `index.astro`, **fuera el JSON-LD** y **fuera `sitemap()`** de `integrations` en `astro.config.mjs`.
+  - 🚨 **El `robots.txt` NO lleva `Disallow: /`.** Si bloqueas el rastreo, Google no puede leer el `noindex` y la URL puede aparecer igual, sin descripción.
+- **Solo se indexa** si Dirección dice que la landing también capta por búsqueda (oferta permanente y una búsqueda real que coincide con la promesa). Entonces: sitemap, canonical, JSON-LD y la FAQ como pregunta y respuesta en texto plano.
+
+**2. Metadatos que salen al compartir el enlace** (WhatsApp y LinkedIn los enseñan; un enlace sin ellos parece spam):
+- `<title>` y `meta description` **del copy aprobado**, nunca «Astro» ni el nombre del proyecto.
+- `og:title`, `og:description`, `og:image` **con URL absoluta** del subdominio (1200×630, <300 KB) y `twitter:card=summary_large_image`.
+- `<html lang="es">`.
+```bash
+grep -oE '<title>[^<]*</title>|<meta (name|property)="(description|og:[a-z]+|twitter:card|robots)"[^>]*>' dist/index.html
+```
+
+**3. Enlaces legales en el pie: Aviso legal · Privacidad · Cookies.** La landing recoge datos personales con el formulario, así que la política de privacidad tiene que estar a un clic. Son **las URL del cliente** (se buscan con el `curl` de la FASE 3). Si el HTML aprobado no las trae, se añaden. Si el cliente no tiene alguna, se avisa a Dirección: **no se escribe texto legal**.
+
+**4. Página 404 propia.** `src/pages/404.astro` con el logo, una frase («Esta página no existe») y un botón a la landing, con `noindex`. Cloudflare Pages sirve `404.html` solo.
+```bash
+curl -s -o /dev/null -w "%{http_code}\n" https://<subdominio>/no-existe   # tiene que dar 404, no 200
+```
+
+**5. Accesibilidad mínima de página** (lo de bloque ya lo revisaron las skills de landing):
+- **Enlace «Saltar al formulario»** como primer elemento enfocable, oculto hasta que recibe foco, apuntando al ancla del formulario (`#lc-form`, `#lp-form`, `#lv-form` o `#li-form`).
+- Las secciones dentro de un `<main>`; cabecera y pie como `<header>` y `<footer>`.
+- Ningún `href="#"` muerto: `grep -c 'href="#"' dist/index.html` → **0**.
+- `alt` en toda imagen con significado; `alt=""` en las decorativas.
+
+**6. Favicon** de la FASE 4 enlazado, y `public/favicon.svg` de la plantilla borrado.
+
+**Lo que NO se añade aunque lo pida esa lista:** validación propia del formulario (la hace Tally dentro del iframe) ni menú de navegación (abre salidas del embudo).
 
 ⚠️ `astro dev` usa otro puerto si el 4321 está ocupado. Leé el log.
 ⚠️ Tras cambiar `astro.config.mjs`, Vite deja caché vieja y el panel sale en blanco con `504 (Outdated Optimize Dep)`. Se arregla: `rm -rf node_modules/.vite .astro` y reiniciar.
@@ -609,58 +746,77 @@ justo en la conversión puede hacer que GTM registre mal la página.
 
 ---
 
-## FASE 9 — Base de datos (Supabase compartido)
+## FASE 9 — Registro de consentimientos (Cloudflare D1)
 
 Para dejar constancia del consentimiento de cookies, que si no vive solo en
-el navegador del visitante y desaparece con él.
+el `localStorage` del visitante y desaparece con él. **La AEPD puede pedir la
+prueba: esta fase NO es opcional.**
 
-> ⚠️ **Esta fase es la ÚNICA del documento que no está validada ejecutándola.**
-> Todo lo demás se comprobó en producción. Esto está razonado y es estándar,
-> pero la primera vez que se monte hay que verificarlo y corregir aquí lo que
-> salga distinto.
+> ✅ **Validado en producción el 15-09-2026** en metodo.Cliente 14.es:
+> aceptar en la web real → fila en D1 con estado, versión del texto, página,
+> país, IP con hash (64 caracteres) y navegador.
 
-**Un solo proyecto de Supabase para toda la agencia**, no uno por landing. Las
-tablas llevan columna `cliente`. Motivos:
+> 🚨 **Pasar la landing a estática NO puede dejarla sin registro.** En la
+> migración de Netlify a Pages se quitaron los `/api/*` y el consentimiento
+> quedó días sin guardarse: ese hueco no se recupera. Y al borrar el sitio de
+> Netlify se va su base con él. **El registro se monta en el mismo despliegue
+> que quita el servidor viejo, nunca "después".**
 
-- El plan gratis permite **2 proyectos activos por organización** y **pausa los
-  proyectos tras una semana sin actividad**. Uno por landing = bases pausadas
-  en cuanto una tenga poco tráfico.
-- Con uno compartido siempre hay alguna landing escribiendo, así que no se
-  pausa nunca, y consultás todos los clientes de una vez.
+**La landing sigue siendo estática.** Cloudflare Pages ejecuta lo que hay en la
+carpeta `functions/` de la raíz del repo como funciones de servidor, sin
+adaptador ni SSR. Astro no la toca; Pages la compila sola.
 
-**Sin servidor: se escribe desde el navegador.** La landing es estática, así que
-no hay backend propio. Se usa la **API REST de Supabase con la clave anónima**
-y una política RLS que **solo permite INSERT** en la tabla de consentimientos.
-La clave anónima es pública por diseño; lo que protege es la política, no la
-clave. **Nunca uses la `service_role` en el navegador.**
+**Por qué D1 y no Supabase:** está en la misma cuenta de Cloudflare (no hay que
+crear cuentas), no se pausa por inactividad, los datos se pueden fijar en la
+UE y la IP se cifra en el servidor (desde el navegador no se puede hacer con
+sal secreta).
 
-```sql
-create table consentimientos (
-  id uuid primary key default gen_random_uuid(),
-  cliente text not null,
-  creado_en timestamptz not null default now(),
-  estado text not null,            -- aceptado | rechazado | parcial
-  version_texto text not null,     -- qué texto legal aceptó
-  ip_hash text                     -- hash con sal, NUNCA la IP en claro
-);
+**Una base D1 por landing**, llamada `consentimientos` (o
+`consentimientos-<cliente>` si ya existe). Columna `cliente` igualmente.
 
-alter table consentimientos enable row level security;
+### Montaje (dashboard, cuenta `<correo-cuenta-de-trabajo>`)
+1. **Storage & databases → D1 → Create.** Nombre, y en *Data location* marcá
+   **Specify jurisdiction → The European Union** (RGPD). No se cambia después.
+2. **Workers & Pages → el proyecto → Settings → Bindings → Add → D1 database.**
+   Variable name **`DB`** (exacto), base la recién creada. Save.
+3. **El enlace solo vale desde el SIGUIENTE despliegue.** Forzalo:
+   `git commit --allow-empty -m "Redespliegue para enlazar D1" && git push`.
+4. Copiá `references/consentimiento-d1.ts` a `functions/api/consentimiento.ts`
+   y cambiá la constante `CLIENTE`.
+5. En el aviso de cookies, `guardar()` hace el `fetch` (ya está en
+   `references/aviso-cookies.astro`).
 
-create policy "insert anonimo" on consentimientos
-  for insert to anon with check (true);
--- Sin policy de select: nadie lee desde el navegador.
-```
+**Sin secretos que manejar:** las tablas se crean solas en la primera
+petición y la sal del hash de la IP se genera sola y vive en la tabla
+`ajustes`. Nadie tiene que pegar un valor en ningún panel.
 
-**Qué verificar la primera vez** (y corregir esta fase con el resultado):
-1. Que el INSERT anónimo entra desde el navegador.
-2. Que un SELECT con la misma clave **falla** (si lee, la RLS está mal).
-3. Que la clave que quedó en el HTML es la `anon`, no la `service_role`.
+### Qué guarda
+| Tabla | Contenido |
+|---|---|
+| `consentimientos` | `id`, `cliente`, `creado_en`, `estado` (aceptar/rechazar), `version_texto` (hash del texto del aviso), `pagina`, `pais`, `ip_hash`, `navegador` |
+| `textos_consentimiento` | El texto exacto que vio el visitante, una vez por versión |
+| `ajustes` | La sal de la IP |
+
+### Verificación (obligatoria, no vale el 204)
+La función responde **204 siempre**, guarde o no: registrar no puede romper la
+landing. Así que el 204 no prueba nada.
+1. En la web real, con el `localStorage` limpio: borrar `ps-consentimiento`,
+   recargar y pulsar **Aceptar**.
+2. D1 → la base → **Console**:
+   ```sql
+   SELECT creado_en, estado, version_texto, pagina, pais, length(ip_hash)
+   FROM consentimientos ORDER BY creado_en DESC LIMIT 5
+   ```
+   Tiene que salir tu fila, con `length(ip_hash)` = 64. Si no sale, lo primero:
+   ¿se redesplegó después de crear el binding?
+3. Tu fila de prueba se queda (es un registro real y tu IP va cifrada) o la
+   borra Dirección; no la borres por tu cuenta.
 
 ### 🚨 Por defecto se guarda SOLO el consentimiento
 
-La tentación es guardarlo todo. **No lo hagas.** El plan gratuito de Supabase
-son **500 MB** y el proyecto es compartido por todos los clientes: lo que
-escribas de más se lo comés a los demás.
+La tentación es guardarlo todo. **No lo hagas.** El plan gratuito de D1 son
+5 GB y 100.000 escrituras al día por cuenta, compartidos por todas las
+landings: lo que escribas de más se lo comés a los demás.
 
 | Tabla | ¿De serie? | Por qué |
 |---|---|---|
@@ -675,7 +831,7 @@ Solo añadí `visitas` o `leads` si Dirección lo pide **explícitamente para es
 cliente**, y avisando del coste. La implementación está en `references/`.
 
 ### La IP nunca se guarda en claro
-Hash con sal (`CONSENTIMIENTO_SAL`). Sirve para acreditar un consentimiento
+Hash SHA-256 con sal (la sal la genera la función y vive en `ajustes`). Sirve para acreditar un consentimiento
 concreto sin conservar el dato personal.
 
 ### La atribución NO necesita base de datos
@@ -729,13 +885,13 @@ Sin firma, cualquiera que descubra la URL puede inventarse leads.
 - Si falta el secreto en el entorno, el endpoint responde **503**, no acepta
   a ciegas.
 - Ante un error al guardar devolvé **500**: así el proveedor reintenta y el lead
-  no se pierde. (Tally exige responder en menos de 10 s.) (Al revés que `/api/evento`.)
+  no se pierde. (Tally exige responder en menos de 10 s.) (Al revés que `/api/consentimiento`.)
 
-### `/api/evento` nunca falla hacia el navegador
-Devuelve 204 pase lo que pase. Medir no puede romper la landing.
+### `/api/consentimiento` nunca falla hacia el navegador
+Devuelve 204 pase lo que pase. Registrar no puede romper la landing.
 
 **El efecto secundario hay que tenerlo presente: su 204 NO demuestra que se
-haya guardado nada.** Por eso hace falta un endpoint de consulta.
+haya guardado nada.** Se comprueba en la consola de D1 (ver arriba).
 
 ### `/api/resumen`, protegido
 Recuentos y visitas por campaña; los datos personales solo con `?detalle=1`.
@@ -747,7 +903,7 @@ curl -H "x-token: <PANEL_TOKEN>" https://<subdominio>/api/resumen
 
 ### Variables que hay que crear
 ```
-TYPEFORM_WEBHOOK_SECRET (o TALLY_WEBHOOK_SECRET)   CONSENTIMIENTO_SAL   PANEL_TOKEN
+TYPEFORM_WEBHOOK_SECRET (o TALLY_WEBHOOK_SECRET)   PANEL_TOKEN
 ```
 Generalas con `openssl rand -hex 24` y subilas **sin que sus valores pasen por
 la conversación** (ver FASE 10).
@@ -1011,7 +1167,7 @@ Probá los dos caminos: **primera interacción** (`scroll`, toque, tecla) y
 22. **`site:` apuntando a un dominio que no existe** emite canonical y sitemap rotos.
 
 **Base de datos y endpoints**
-23. **Un endpoint que se traga los errores no demuestra nada.** Si `/api/evento` devuelve 204 pase lo que pase, hace falta `/api/resumen` para saber si guardó.
+23. **Un endpoint que se traga los errores no demuestra nada.** `/api/consentimiento` devuelve 204 pase lo que pase: se verifica en la consola de D1, no por el código de respuesta. Y un binding de D1 nuevo no existe hasta el siguiente despliegue.
 
 **Método**
 24. **Verificá lo que se renderiza, no la propiedad del DOM.** `getComputedStyle().display`, no `.hidden`.
@@ -1036,8 +1192,11 @@ Probá los dos caminos: **primera interacción** (`scroll`, toque, tecla) y
     ```
     Y comprobá que `.gitignore` los cubre. **Nunca quites una entrada del `.gitignore` al migrar**: cuesta nada dejarla y evita justo esto.
 
+**Medición**
+31. **La condición que pinta el aviso de cookies tiene que incluir TODOS los IDs de medición.** Si olvida uno (pasó con `clarityId`), en una landing que solo use ese servicio no aparece el aviso, nadie acepta y el script no carga nunca, **sin ningún error**. Ver la tabla de cinco sitios en la FASE 3.
+
 **Tailwind (no debería hacer falta)**
-31. La base va en `@layer base`, y las utilidades con variables se escriben `py-[var(--x)]` — `py-[--x]` computa `0px` **en silencio**.
+32. La base va en `@layer base`, y las utilidades con variables se escriben `py-[var(--x)]` — `py-[--x]` computa `0px` **en silencio**.
 
 ---
 

@@ -7,7 +7,7 @@
 
 Flujo COMPLETO 2-en-1 para la landing de UN INMUEBLE CONCRETO en venta (piso, villa, chalet), con la estructura exacta de cliente-06.es ya publicada en producción (copiada como referencia, sin dato de conversión que la valide): hero de estilo de vida, galería por estancias, formulario temprano, ficha con precio, el entorno como argumento propio, cómo visitar en 3 pasos, el agente como autoridad, FAQ y cierre. Sección por sección escribe primero el COPY y, tras la aprobación, el HTML, pasando cada bloque por las skills de diseño impeccable, design-taste-frontend y emil-design-eng.
 
-## Antes de empezar necesitás
+## Antes de empezar necesitas
 
 - **El paquete `fundamentos` instalado al lado** (`npx skills add <usuario-github>/flowboost-skills-fundamentos --copy`). Esta skill lee Ogilvy, Schwartz y el compliance de Meta desde `../fundamentos-copy/`. **Si no está, la skill funciona a medias y NO avisa.**
 - La skill **`auditar-guiones-egc`** (paquete *guiones*): lee ficheros suyos.
@@ -39,4 +39,4 @@ Google Drive del cliente (solo lectura salvo entregables), Tally (formulario).
 
 ---
 
-*Generado el 10-09-2026 desde el sistema de Flowboost. Se regenera con `gen_leeme.py`; no editar a mano.*
+*Generado el 21-09-2026 desde el sistema de Flowboost. Se regenera con `gen_leeme.py`; no editar a mano.*

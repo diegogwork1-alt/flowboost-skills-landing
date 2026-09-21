@@ -7,7 +7,7 @@
 
 Crea la página de Gracias (Thank You Page / TYP) de un cliente, la que se muestra después de enviar el formulario. Define la ESTRUCTURA fija que debe tener, la personalización por parámetros de URL (nombre y respuestas del formulario), el WhatsApp que INICIA el lead (para no quemar el número), las reglas de código para pegar en Elementor/WordPress, la publicación (noindex + slug) y exactamente qué poner en la URL de redirección de Tally según los campos del formulario.
 
-## Antes de empezar necesitás
+## Antes de empezar necesitas
 
 - La URL de la landing publicada y los campos reales del formulario de Tally.
 
@@ -37,4 +37,4 @@ Google Drive del cliente (solo lectura salvo entregables), Tally (formulario).
 
 ---
 
-*Generado el 10-09-2026 desde el sistema de Flowboost. Se regenera con `gen_leeme.py`; no editar a mano.*
+*Generado el 21-09-2026 desde el sistema de Flowboost. Se regenera con `gen_leeme.py`; no editar a mano.*

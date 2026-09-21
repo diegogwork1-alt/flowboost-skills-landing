@@ -9,7 +9,7 @@ Maqueta en HTML/CSS (para widgets de Elementor/WordPress) una landing VSL de res
 
 **Qué NO hace:** NO redacta copy ni inventa datos — lo coloca en los esqueletos, bloque por bloque.
 
-## Antes de empezar necesitás
+## Antes de empezar necesitas
 
 - **El paquete `fundamentos` instalado al lado** (`npx skills add <usuario-github>/flowboost-skills-fundamentos --copy`). Esta skill lee Ogilvy, Schwartz y el compliance de Meta desde `../fundamentos-copy/`. **Si no está, la skill funciona a medias y NO avisa.**
 - El copy aprobado (o el brief, si la skill también redacta) y los tokens de marca del cliente.
@@ -40,4 +40,4 @@ Google Drive del cliente (solo lectura salvo entregables), Tally (formulario).
 
 ---
 
-*Generado el 10-09-2026 desde el sistema de Flowboost. Se regenera con `gen_leeme.py`; no editar a mano.*
+*Generado el 21-09-2026 desde el sistema de Flowboost. Se regenera con `gen_leeme.py`; no editar a mano.*

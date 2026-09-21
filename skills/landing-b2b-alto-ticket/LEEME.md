@@ -9,7 +9,7 @@
 
 **Qué NO hace:** NO redacta copy ni inventa datos — toma tus textos y los coloca en los esqueletos. No usar para landings VSL con formulario arriba (esas son `landing-vsl-directa`, `landing-vsl-directa-copy-html` y `landing-vsl-directa-index-html`) ni para la venta de un inmueble concreto (esa es `landing-inmueble-copy-html`).
 
-## Antes de empezar necesitás
+## Antes de empezar necesitas
 
 - **El paquete `fundamentos` instalado al lado** (`npx skills add <usuario-github>/flowboost-skills-fundamentos --copy`). Esta skill lee Ogilvy, Schwartz y el compliance de Meta desde `../fundamentos-copy/`. **Si no está, la skill funciona a medias y NO avisa.**
 - El copy aprobado (o el brief, si la skill también redacta) y los tokens de marca del cliente.
@@ -40,4 +40,4 @@ Google Drive del cliente (solo lectura salvo entregables), Tally (formulario).
 
 ---
 
-*Generado el 10-09-2026 desde el sistema de Flowboost. Se regenera con `gen_leeme.py`; no editar a mano.*
+*Generado el 21-09-2026 desde el sistema de Flowboost. Se regenera con `gen_leeme.py`; no editar a mano.*

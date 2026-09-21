@@ -7,7 +7,7 @@
 
 Flujo COMPLETO 2-en-1 para una landing de conversión de respuesta directa (B2B / servicios) — sección por sección, primero ESCRIBE el copy (Ogilvy + Ecuación de Valor de Hermozi + Life Force 8, estructura de 18 instrucciones con variantes V1/V2) y, SOLO tras la aprobación del usuario, entrega el HTML maquetado para Elementor (esqueleto de 18 bloques 0-17). También funciona en MODO AUDITORÍA: si se le pasa una landing ya hecha (HTML, archivo o URL) y se pide revisarla, corregirla, mejorarla o saber qué está mal, la audita contra sus propias reglas y devuelve el diagnóstico priorizado más los bloques corregidos completos; NUNCA pregunta al usuario qué cambiar, porque el criterio está en la skill.
 
-## Antes de empezar necesitás
+## Antes de empezar necesitas
 
 - **El paquete `fundamentos` instalado al lado** (`npx skills add <usuario-github>/flowboost-skills-fundamentos --copy`). Esta skill lee Ogilvy, Schwartz y el compliance de Meta desde `../fundamentos-copy/`. **Si no está, la skill funciona a medias y NO avisa.**
 - El copy aprobado (o el brief, si la skill también redacta) y los tokens de marca del cliente.
@@ -38,4 +38,4 @@ Google Drive del cliente (solo lectura salvo entregables), Tally (formulario).
 
 ---
 
-*Generado el 10-09-2026 desde el sistema de Flowboost. Se regenera con `gen_leeme.py`; no editar a mano.*
+*Generado el 21-09-2026 desde el sistema de Flowboost. Se regenera con `gen_leeme.py`; no editar a mano.*

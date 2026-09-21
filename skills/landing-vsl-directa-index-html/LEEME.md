@@ -7,7 +7,7 @@
 
 Crea una landing VSL de respuesta directa de 9 bloques (0-8) con el FORMULARIO ARRIBA y entrega UN SOLO archivo index.html listo para publicar, no widgets de Elementor. Escribe primero el COPY sección por sección (Ogilvy + Ecuación de Valor + Life Force 8 + PAS + CRO tráfico frío) y, tras la aprobación, la maqueta; al final ensambla todo en un index.html completo y ofrece encadenar con publicar-landing.
 
-## Antes de empezar necesitás
+## Antes de empezar necesitas
 
 - **El paquete `fundamentos` instalado al lado** (`npx skills add <usuario-github>/flowboost-skills-fundamentos --copy`). Esta skill lee Ogilvy, Schwartz y el compliance de Meta desde `../fundamentos-copy/`. **Si no está, la skill funciona a medias y NO avisa.**
 - El copy aprobado (o el brief, si la skill también redacta) y los tokens de marca del cliente.
@@ -38,4 +38,4 @@ Google Drive del cliente (solo lectura salvo entregables), Tally (formulario).
 
 ---
 
-*Generado el 10-09-2026 desde el sistema de Flowboost. Se regenera con `gen_leeme.py`; no editar a mano.*
+*Generado el 21-09-2026 desde el sistema de Flowboost. Se regenera con `gen_leeme.py`; no editar a mano.*

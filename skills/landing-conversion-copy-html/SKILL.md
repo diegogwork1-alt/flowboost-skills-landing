@@ -4,7 +4,7 @@ description: Flujo COMPLETO 2-en-1 para una landing de conversión de respuesta 
 ---
 
 
-> 📐 **PARÁMETROS DE COPY DE LANDING, CON SU FUENTE:** `../fundamentos-copy/references/parametros-landing.md`. Ahí están una sola vez y **con la fuente de cada una** las reglas que antes estaban repartidas y desiguales entre las 9 skills de landing: frases ≤15 palabras · párrafos ≤2 oraciones · **prohibido el guion largo (—)** · el titular responde «¿por qué me importa?» · **2-3 testimonios reales** y nunca en carrusel en móvil · **nunca «sin compromiso» ni «gratis»** bajo el CTA · y **qué cifras NO están en las fuentes** (los umbrales de Core Web Vitals y el impacto de la velocidad en conversión: si alguien las cita como dato propio, es una alucinación).
+> 📐 **PARÁMETROS DE COPY DE LANDING, CON SU FUENTE:** `../fundamentos-copy/references/parametros-landing.md`. Ahí están una sola vez y **con la fuente de cada una** las reglas que antes estaban repartidas y desiguales entre las 9 skills de landing: frases ≤15 palabras · párrafos ≤2 oraciones · **prohibido el guion largo (—)** · el titular responde «¿por qué me importa?» · **2-3 testimonios reales** y nunca en carrusel en móvil · **nunca «sin compromiso» ni «gratis»** bajo el CTA · **muletillas de IA prohibidas** («potenciar», «llevar al siguiente nivel», «sin fisuras»…) · y **qué cifras NO están en las fuentes** (los umbrales de Core Web Vitals y el impacto de la velocidad en conversión: si alguien las cita como dato propio, es una alucinación).
 # Landing de conversión — Copy + HTML (2 en 1, con aprobación por sección)
 
 **IMPORTANTE: TODO lo que necesitás está EN ESTE MISMO ARCHIVO, más abajo. NO leas archivos externos.** Cuando las instrucciones mencionen "ESTRUCTURA-B2B" u "Ogilvy on Advertising", esos contenidos están INCLUIDOS abajo (secciones "ESTRUCTURA" y "PRINCIPIOS DE OGILVY"). Las "4 imágenes de referencia" son opcionales: la decisión V1/V2 se puede tomar con el brief + los criterios de texto de abajo.
@@ -133,6 +133,7 @@ No es un repaso final: se ejecuta bloque por bloque. Si respondés "no" a alguna
 - [ ] ¿Lo pasaste por `impeccable`, `design-taste-frontend`, `emil-design-eng` y `make-interfaces-feel-better`?
 - [ ] ¿Radio concéntrico (externo = interno + padding), `tabular-nums` en las cifras que cambian, outline de 1px en las imágenes?
 - [ ] ¿Área táctil ≥44×44 px en TODO control, sin solapes?
+- [ ] ¿Cada control (CTA, acordeón, pestañas, flechas, cerrar) tiene sus **estados**: hover solo con `transform`/`box-shadow`, **active** (`scale(.98)` o `translateY(1px)`), **`:focus-visible`** con anillo visible, y deshabilitado que no dependa solo del color? ¿Ningún `href="#"` muerto?
 - [ ] ¿Contraste AA verificado, incluido el acento sobre el que se hace clic?
 - [ ] ¿Jerarquía de headings sin saltos y un solo `h1` en la página?
 - [ ] Si el bloque tiene formulario, acordeón, tabs, carrusel o botones de icono: ¿lo pasaste por `fixing-accessibility`?
@@ -671,7 +672,7 @@ Por cada bloque:
 - **14 Formulario:** `TITULO_FORM` (orientado a valor, no "Contactanos"), `MICRO_FUD`. El form es Tally (`{{TALLY_FORM_ID}}`); en modo embed es un bloque propio con `id="lp-form"`.
 - **15 FAQ:** `TITULO`, 6× (`PREGUNTA`/`RESPUESTA`).
 - **16 Recap + Cierre:** `TITULO_RECAP`, 3× `BULLET_VALUE_PROP`, **`DESGLOSE_OFERTA`** (todo lo que incluye — ilusión del esfuerzo), **`LINEA_PERDIDA`** (qué se pierde por no actuar — aversión a la pérdida, solo con datos reales), `TEXTO_CTA_FINAL`, `MICRO_FUD`.
-- **17 Footer:** logo blanco + descargo (no afiliación Meta/Google) + copyright. Sin enlaces legales.
+- **17 Footer:** logo blanco + descargo (no afiliación Meta/Google) + copyright + enlaces legales del cliente (Aviso legal · Privacidad · Cookies). Obligatorios: el formulario recoge datos personales.
 
 **CTAs (todos al MISMO destino = el formulario):** todos usan `{{CTA_HREF}}`, que se define una vez en Paso 0 según el modo:
 - **Embed inline:** `{{CTA_HREF}}` = `#lp-form` (ancla al Bloque 14; scroll suave nativo).
@@ -1304,7 +1305,7 @@ Bloque dedicado con `id="lp-form"`; todos los CTA de la página anclan acá (`{{
 
 ## 17. FOOTER · oscuro-2
 
-Footer de landing de tráfico pago: logo + descargo (no afiliación Meta/Google/YouTube) + copyright. SIN enlaces legales.
+Footer de landing de tráfico pago: logo + descargo (no afiliación Meta/Google/YouTube) + copyright + enlaces legales del cliente (Aviso legal · Privacidad · Cookies). **Obligatorios**: el formulario recoge datos personales y el RGPD exige la política de privacidad a un clic. Son las URL del cliente; nunca se escribe texto legal.
 
 ```html
 <footer class="lp-band lp-band--footer" style="text-align:center !important;padding-block:30px !important;">
@@ -1312,11 +1313,14 @@ Footer de landing de tráfico pago: logo + descargo (no afiliación Meta/Google/
 .lp-footer-inner img{height:26px !important;margin:0 auto 16px !important;}
 .lp-footer-disc{color:rgba(255,255,255,.5) !important;font-size:12px !important;line-height:1.7 !important;max-width:780px !important;margin:0 auto !important;}
 .lp-footer-copy{color:rgba(255,255,255,.35) !important;font-size:11.5px !important;line-height:1.6 !important;margin-top:14px !important;}
+.lp-footer-inner .lp-footer-legal{color:rgba(255,255,255,.35) !important;font-size:12px !important;line-height:1.6 !important;margin-top:6px !important;}
+.lp-footer-inner .lp-footer-legal a{color:rgba(255,255,255,.6) !important;text-decoration:underline !important;display:inline-block !important;padding-block:13px !important;}
 </style>
 <div class="lp-frame lp-footer-inner">
   <img src="{{URL_LOGO_BLANCO}}" alt="{{NOMBRE_MARCA}}" width="140" height="40">
   <p class="lp-footer-disc">Este sitio no forma parte de Facebook ni de Meta Platforms, Inc., y tampoco está avalado por Meta de ninguna manera. FACEBOOK e INSTAGRAM son marcas registradas de Meta Platforms, Inc. Este sitio tampoco forma parte de Google ni de YouTube, ni está avalado por Google LLC; GOOGLE y YOUTUBE son marcas registradas de Google LLC.</p>
   <p class="lp-footer-copy">© {{AÑO}} {{NOMBRE_MARCA}}. Todos los derechos reservados.</p>
+  <p class="lp-footer-legal"><a href="{{URL_AVISO_LEGAL}}">Aviso legal</a> · <a href="{{URL_PRIVACIDAD}}">Política de privacidad</a> · <a href="{{URL_COOKIES}}">Política de cookies</a></p>
 </div>
 </footer>
 ```

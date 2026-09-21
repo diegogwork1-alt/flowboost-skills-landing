@@ -26,7 +26,7 @@ description: Flujo COMPLETO 2-en-1 para la landing de UN INMUEBLE CONCRETO en ve
 ---
 
 
-> 📐 **PARÁMETROS DE COPY DE LANDING, CON SU FUENTE:** `../fundamentos-copy/references/parametros-landing.md`. Ahí están una sola vez y **con la fuente de cada una** las reglas que antes estaban repartidas y desiguales entre las 9 skills de landing: frases ≤15 palabras · párrafos ≤2 oraciones · **prohibido el guion largo (—)** · el titular responde «¿por qué me importa?» · **2-3 testimonios reales** y nunca en carrusel en móvil · **nunca «sin compromiso» ni «gratis»** bajo el CTA · y **qué cifras NO están en las fuentes** (los umbrales de Core Web Vitals y el impacto de la velocidad en conversión: si alguien las cita como dato propio, es una alucinación).
+> 📐 **PARÁMETROS DE COPY DE LANDING, CON SU FUENTE:** `../fundamentos-copy/references/parametros-landing.md`. Ahí están una sola vez y **con la fuente de cada una** las reglas que antes estaban repartidas y desiguales entre las 9 skills de landing: frases ≤15 palabras · párrafos ≤2 oraciones · **prohibido el guion largo (—)** · el titular responde «¿por qué me importa?» · **2-3 testimonios reales** y nunca en carrusel en móvil · **nunca «sin compromiso» ni «gratis»** bajo el CTA · **muletillas de IA prohibidas** («potenciar», «llevar al siguiente nivel», «sin fisuras»…) · y **qué cifras NO están en las fuentes** (los umbrales de Core Web Vitals y el impacto de la velocidad en conversión: si alguien las cita como dato propio, es una alucinación).
 # Landing de inmueble — COPY + HTML
 
 Estructura **calcada de cliente-06.es**, **publicada** en producción. ⚠️ *«Publicada» no es «validada»: no hay ni un dato de conversión de esa landing en el repositorio, y lo único medido de Cliente 06 es un **perdedor** — el ángulo «provincia» a 85,40 €/lead frente a 34 € del mismo servicio con «pueblo» (`../auditar-guiones-egc/references/patrones-medidos.md`). La estructura se copia porque es la referencia que eligió Dirección, no porque haya batido a otra.* Prefijo `li-`, tokens `--li-*`.
@@ -526,6 +526,7 @@ No es opcional ni es un repaso final: se ejecuta bloque por bloque. Si respondé
 - [ ] ¿Lo pasaste por `impeccable`, `design-taste-frontend`, `emil-design-eng` y `make-interfaces-feel-better`?
 - [ ] ¿Radio concéntrico (externo = interno + padding), `tabular-nums` en las cifras que cambian, outline de 1px en las imágenes?
 - [ ] ¿Área táctil ≥44×44 px en TODO control, sin solapes, y ningún `transition: all`?
+- [ ] ¿Cada control (CTA, acordeón, pestañas, flechas, cerrar) tiene sus **estados**: hover solo con `transform`/`box-shadow`, **active** (`scale(.98)` o `translateY(1px)`), **`:focus-visible`** con anillo visible, y deshabilitado que no dependa solo del color? ¿Ningún `href="#"` muerto?
 - [ ] Si el bloque tiene formulario, acordeón, tabs, carrusel o botones de icono: ¿lo pasaste por `fixing-accessibility`?
 
 ## Diseño visual — obligatorias
